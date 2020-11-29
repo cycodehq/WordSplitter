@@ -7,7 +7,7 @@ namespace WordSplitter {
             '-', '_', ' '
         };
 
-        public static List<string> SplitWordToKeywords(string input) {
+        public static List<string> SplitWords(string input) {
             var result = new List<string>();
             if (string.IsNullOrEmpty(input)) {
                 return result;

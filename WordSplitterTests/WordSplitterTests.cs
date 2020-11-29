@@ -7,7 +7,7 @@ namespace WordSplitterTester {
         [Theory]
         [MemberData(nameof(TestData.TestScenarios), MemberType = typeof(TestData))]
         public void TestScenarios(string input, List<string> expectedOutput) {
-            var result = WordSplitter.WordSplitter.SplitWordToKeywords(input);
+            var result = WordSplitter.WordSplitter.SplitWords(input);
 
             result.Should().BeEquivalentTo(expectedOutput);
         }
