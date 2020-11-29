@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <PackageId>WordSplitter</PackageId>
+        <Version>1.0.0</Version>
+        <Authors>Ilia Shkolyar</Authors>
+        <Company>Cycode</Company>
+        <Title>Splits a string into logical words</Title>
+        <Description>Given a CamelCase / snake_case / hypen-seperated string, splits it into its containing words</Description>
+    </PropertyGroup>
+
+    <PropertyGroup>
+      <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="LICENSE.txt" Pack="true" PackagePath="$(PackageLicenseFile)"/>
+    </ItemGroup>
+
+</Project>
