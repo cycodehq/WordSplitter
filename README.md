@@ -47,6 +47,6 @@ const string inputWithNewDelimiters = "ABCWDEF";
 ["ABC", "DEF"]
 ```
 
-##### Default Configuration:
+#### Default Configuration
 - ShouldReturnResultsInLowerCase: `false`
 - Delimiters: `['-', '_', '.', ' ', ';']`
