@@ -24,13 +24,15 @@ namespace WordSplitter {
                     continue;
                 }
 
+                if (!char.IsLetter(currentChar)) {
+                    continue;
+                }
+
                 var isCurrentCharLower = char.IsLower(currentChar);
                 if (HasLowerCaseSequenceFinished(isCurrentCharLower, currentWordState)) {
                     AddKeywordToResult(input, currentKeywordIndex, currentIndex, result);
                     currentKeywordIndex = currentIndex;
-                }
-
-                if (HasUpperCaseSequenceFinished(isCurrentCharLower, currentWordState, currentIndex,
+                } else if (HasUpperCaseSequenceFinished(isCurrentCharLower, currentWordState, currentIndex,
                     currentKeywordIndex)) {
                     AddKeywordToResult(input, currentKeywordIndex, currentIndex - 1, result);
                     currentKeywordIndex = currentIndex - 1;

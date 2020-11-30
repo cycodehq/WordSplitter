@@ -46,11 +46,6 @@ namespace WordSplitterTester {
                 };
 
                 yield return new object[] {
-                    "some-bigThing",
-                    new List<string> {"some", "big", "Thing"}
-                };
-
-                yield return new object[] {
                     "CamelCase",
                     new List<string> {"Camel", "Case"}
                 };
@@ -76,8 +71,38 @@ namespace WordSplitterTester {
                 };
 
                 yield return new object[] {
+                    "--ab__cd--ef--__",
+                    new List<string> {"ab", "cd", "ef"}
+                };
+
+                yield return new object[] {
                     "one and two",
                     new List<string> {"one", "and", "two"}
+                };
+
+                yield return new object[] {
+                    "aBc",
+                    new List<string> {"a", "Bc"}
+                };
+
+                yield return new object[] {
+                    "a123Test",
+                    new List<string> {"a123", "Test"}
+                };
+
+                yield return new object[] {
+                    "Test123Test",
+                    new List<string> {"Test123", "Test"}
+                };
+
+                yield return new object[] {
+                    "Test-123-Test",
+                    new List<string> {"Test", "123", "Test"}
+                };
+
+                yield return new object[] {
+                    "aa1Bb2",
+                    new List<string> {"aa1", "Bb2"}
                 };
             }
         }
