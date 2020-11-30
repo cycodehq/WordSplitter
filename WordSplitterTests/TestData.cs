@@ -76,8 +76,18 @@ namespace WordSplitterTester {
                 };
 
                 yield return new object[] {
+                    "one.and.two",
+                    new List<string> {"one", "and", "two"}
+                };
+
+                yield return new object[] {
                     "one and two",
                     new List<string> {"one", "and", "two"}
+                };
+
+                yield return new object[] {
+                    "one;two",
+                    new List<string> {"one", "two"}
                 };
 
                 yield return new object[] {

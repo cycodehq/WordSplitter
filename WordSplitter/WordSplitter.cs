@@ -4,11 +4,14 @@ using System.Linq;
 
 namespace WordSplitter {
     public static class WordSplitterExtension {
-        private static readonly List<char> WordSplittingChars = new List<char> {
-            '-', '_', ' '
+        private static readonly List<char> DefaultWordSplittingChars = new List<char> {
+            '-', '_', '.', ' ', ';'
         };
 
-        public static List<string> SplitWords(this String input) {
+        public static List<string> SplitWords(this String input,
+            WordSplitterConfiguration? wordSplitterConfiguration = null) {
+            var wordSplittingChars = wordSplitterConfiguration?.Delimiters ?? DefaultWordSplittingChars;
+
             var result = new List<string>();
             if (string.IsNullOrEmpty(input)) {
                 return result;
@@ -18,7 +21,7 @@ namespace WordSplitter {
             var currentKeywordIndex = 0;
             for (int currentIndex = 0; currentIndex < input.Length; currentIndex++) {
                 var currentChar = input[currentIndex];
-                if (WordSplittingChars.Contains(currentChar)) {
+                if (wordSplittingChars.Contains(currentChar)) {
                     AddKeywordToResult(input, currentKeywordIndex, currentIndex, result);
                     currentKeywordIndex = currentIndex + 1;
                     continue;
@@ -32,7 +35,8 @@ namespace WordSplitter {
                 if (HasLowerCaseSequenceFinished(isCurrentCharLower, currentWordState)) {
                     AddKeywordToResult(input, currentKeywordIndex, currentIndex, result);
                     currentKeywordIndex = currentIndex;
-                } else if (HasUpperCaseSequenceFinished(isCurrentCharLower, currentWordState, currentIndex,
+                }
+                else if (HasUpperCaseSequenceFinished(isCurrentCharLower, currentWordState, currentIndex,
                     currentKeywordIndex)) {
                     AddKeywordToResult(input, currentKeywordIndex, currentIndex - 1, result);
                     currentKeywordIndex = currentIndex - 1;
@@ -51,6 +55,9 @@ namespace WordSplitter {
 
             return result
                 .Where(keyword => !string.IsNullOrEmpty(keyword))
+                .Select(keyword => wordSplitterConfiguration?.ShouldReturnResultsInLowerCase == true
+                    ? keyword.ToLower()
+                    : keyword)
                 .ToList();
         }
 
