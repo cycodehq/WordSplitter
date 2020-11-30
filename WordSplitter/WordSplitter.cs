@@ -1,43 +1,47 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace WordSplitter {
-    public static class WordSplitter {
+    public static class WordSplitterExtension {
         private static readonly List<char> WordSplittingChars = new List<char> {
             '-', '_', ' '
         };
 
-        public static List<string> SplitWords(string input) {
+        public static List<string> SplitWords(this String input) {
             var result = new List<string>();
             if (string.IsNullOrEmpty(input)) {
                 return result;
             }
 
-            var currentState = WordState.LowerCase;
+            var currentWordState = WordState.LowerCase;
             var currentKeywordIndex = 0;
-            for (int i = 0; i < input.Length; i++) {
-                var currentChar = input[i];
+            for (int currentIndex = 0; currentIndex < input.Length; currentIndex++) {
+                var currentChar = input[currentIndex];
                 if (WordSplittingChars.Contains(currentChar)) {
-                    AddKeywordToResult(input, currentKeywordIndex, i, result);
-                    currentKeywordIndex = i + 1;
+                    AddKeywordToResult(input, currentKeywordIndex, currentIndex, result);
+                    currentKeywordIndex = currentIndex + 1;
                     continue;
                 }
 
                 var isCurrentCharLower = char.IsLower(currentChar);
-                // if (WasStateChanged(isCurrentCharLower, currentState) && i != 0) {
-                if (!isCurrentCharLower && currentState == WordState.LowerCase && i != 0) {
-                    AddKeywordToResult(input, currentKeywordIndex, i, result);
-                    currentKeywordIndex = i;
+                if (HasLowerCaseSequenceFinished(isCurrentCharLower, currentWordState)) {
+                    AddKeywordToResult(input, currentKeywordIndex, currentIndex, result);
+                    currentKeywordIndex = currentIndex;
                 }
 
-                if (isCurrentCharLower && currentState == WordState.UpperCase && i - currentKeywordIndex > 1) {
-                    AddKeywordToResult(input, currentKeywordIndex, i - 1, result);
-                    currentKeywordIndex = i - 1;
+                if (HasUpperCaseSequenceFinished(isCurrentCharLower, currentWordState, currentIndex,
+                    currentKeywordIndex)) {
+                    AddKeywordToResult(input, currentKeywordIndex, currentIndex - 1, result);
+                    currentKeywordIndex = currentIndex - 1;
                 }
 
-                currentState = isCurrentCharLower ? WordState.LowerCase : WordState.UpperCase;
+                currentWordState = isCurrentCharLower ? WordState.LowerCase : WordState.UpperCase;
             }
 
+            // Reached end of string.
+            // If the `currentKeywordIndex` is smaller than the string index, it means the
+            // last keyword needs to be added.
             if (currentKeywordIndex < input.Length) {
                 var keyword = input.Substring(currentKeywordIndex);
                 result.Add(keyword);
@@ -48,11 +52,18 @@ namespace WordSplitter {
                 .ToList();
         }
 
-        private static bool WasStateChanged(bool isCurrentCharLower, WordState currentState) =>
-            isCurrentCharLower && currentState == WordState.UpperCase ||
-            !isCurrentCharLower && currentState == WordState.LowerCase;
+        private static bool HasUpperCaseSequenceFinished(bool isCurrentCharLower, WordState currentWordState,
+            int currentIndex, int currentKeywordIndex) {
+            return isCurrentCharLower && currentWordState == WordState.UpperCase &&
+                   currentIndex - currentKeywordIndex > 1;
+        }
 
-        private static void AddKeywordToResult(string input, int lastKeywordIndex, int currentIndex, List<string> result) {
+        private static bool HasLowerCaseSequenceFinished(bool isCurrentCharLower, WordState currentWordState) {
+            return !isCurrentCharLower && currentWordState == WordState.LowerCase;
+        }
+
+        private static void AddKeywordToResult(string input, int lastKeywordIndex, int currentIndex,
+            List<string> result) {
             var keyword = input.Substring(lastKeywordIndex, currentIndex - lastKeywordIndex);
             result.Add(keyword);
         }

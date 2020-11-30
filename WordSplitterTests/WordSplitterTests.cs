@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using FluentAssertions;
+using WordSplitter;
 using Xunit;
 
 namespace WordSplitterTester {
@@ -7,7 +8,7 @@ namespace WordSplitterTester {
         [Theory]
         [MemberData(nameof(TestData.TestScenarios), MemberType = typeof(TestData))]
         public void TestScenarios(string input, List<string> expectedOutput) {
-            var result = WordSplitter.WordSplitter.SplitWords(input);
+            var result = input.SplitWords();
 
             result.Should().BeEquivalentTo(expectedOutput);
         }
