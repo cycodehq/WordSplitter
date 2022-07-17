@@ -6,8 +6,8 @@
         <Authors>Cycode;Ilia Shkolyar</Authors>
         <Company>Cycode</Company>
         <Title>Splits a string into logical words</Title>
-        <Version>1.0.3</Version>
-	<RepositoryUrl>https://github.com/cycodehq/WordSplitter</RepositoryUrl>
+        <Version>1.0.4</Version>
+	<RepositoryUrl>https://github.com/cycodehq-public/WordSplitter</RepositoryUrl>
         <Description>Given a CamelCase / snake_case / hypen-seperated string, splits it into its containing words</Description>
     </PropertyGroup>
 
